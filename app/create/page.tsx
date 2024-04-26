@@ -33,7 +33,13 @@ const formSchema = z.object({
     .max(50, "Required")
     .regex(/\w{2,} \w{2,}/, { message: "Please enter your full name." }),
   email: z.string().email(),
-  date_of_birth: z.date(),
+  date_of_birth: z.preprocess((dateObj) => {
+    if (dateObj instanceof Date) {
+      return dateObj.toISOString();
+    } else {
+      throw new Error("Error picking date");
+    }
+  }, z.string()),
   entry_year: z.preprocess(
     (value) => Number(value),
     z
@@ -48,16 +54,24 @@ function Create() {
     resolver: zodResolver(formSchema),
   });
 
-  function onSubmit(data: z.infer<typeof formSchema>) {
-    console.log(typeof data.entry_year);
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    });
+  async function onSubmit(data: z.infer<typeof formSchema>) {
+    try {
+      const response = await fetch("http://localhost:9090/api/students", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      toast({
+        title: "You submitted the following student:",
+        description: (
+          <p className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">Studo</p>
+        ),
+      });
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
@@ -120,7 +134,11 @@ function Create() {
                       <PopoverContent className="w-auto p-0" align="start">
                         <Calendar
                           mode="single"
-                          selected={field.value}
+                          selected={
+                            typeof field.value === "string"
+                              ? new Date(field.value)
+                              : field.value
+                          }
                           onSelect={field.onChange}
                           disabled={(date) =>
                             date > new Date() || date < new Date("1900-01-01")
