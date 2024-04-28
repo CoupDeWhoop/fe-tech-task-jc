@@ -76,7 +76,7 @@ function Create() {
 
   return (
     <div className="flex justify-center">
-      <div>
+      <div className="w-full max-w-lg">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
@@ -105,7 +105,7 @@ function Create() {
                 </FormItem>
               )}
             />
-            <div className="flex flex-row gap-8">
+            <div className="flex flex-col md:flex-row">
               <FormField
                 control={form.control}
                 name="date_of_birth"
@@ -151,9 +151,13 @@ function Create() {
                   </FormItem>
                 )}
               />
-              <FormDescription>
-                {/* <p>Scroll years: [Shift + Page Up/Down]</p>
-                <p> MacOS: [Shift + fn + Up/Down arrow keys].</p> */}
+              <FormDescription className="pt-2 md:pl-8 md:pt-2">
+                <span className="flow-root mb-3">
+                  <strong>Scroll years:</strong> [Shift + Page Up/Down]
+                </span>
+                <span>
+                  <strong>MacOS:</strong> [Shift + fn + Up/Down arrow keys].
+                </span>
               </FormDescription>
             </div>
             <FormField
