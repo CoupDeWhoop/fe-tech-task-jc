@@ -8,6 +8,9 @@ import {
   TableFooter,
   TableRow,
 } from "@/components/ui/table";
+import { Button } from "./ui/button";
+
+import { Pencil, Trash } from "lucide-react";
 
 interface Student {
   id: Number;
@@ -62,13 +65,23 @@ export function StudentTable({ students }: StudentTableProps) {
               <TableCell className="text-right">
                 {String(student.entry_year)}
               </TableCell>
+              <TableCell className="pl-4 pr-0">
+                <Button variant={"ghost"} size={"sm"} className="text-gray-400">
+                  <Pencil />
+                </Button>
+              </TableCell>
+              <TableCell className="pl-0">
+                <Button variant={"ghost"} size={"sm"} className="text-red-500">
+                  <Trash />
+                </Button>
+              </TableCell>
             </TableRow>
           );
         })}
       </TableBody>
       <TableFooter>
         <TableRow>
-          <TableCell colSpan={3}></TableCell>
+          <TableCell colSpan={4}></TableCell>
           <TableCell className="text-right">Total Students:</TableCell>
           <TableCell className="text-right">{students.length}</TableCell>
         </TableRow>
@@ -80,7 +93,7 @@ export default async function StudentList() {
   const students = await getStudents();
   return (
     <div className="flex justify-center">
-      <div className="max-w-screen-sm ">
+      <div>
         <StudentTable students={students} />
       </div>
     </div>
