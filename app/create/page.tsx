@@ -27,26 +27,24 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
-const formSchema = z.object({
+export const formSchema = z.object({
   name: z
     .string()
     .max(50, "Required")
     .regex(/\w{2,} \w{2,}/, { message: "Please enter your full name." }),
   email: z.string().email(),
   date_of_birth: z.preprocess((dateObj) => {
-    if (dateObj instanceof Date) {
-      return dateObj.toISOString();
-    } else {
-      throw new Error("Error picking date");
+    if (dateObj) {
+      if (dateObj instanceof Date) {
+        return dateObj.toISOString();
+      } else {
+        throw new Error("Error picking date");
+      }
     }
-  }, z.string()),
-  entry_year: z.preprocess(
-    (value) => Number(value),
-    z
-      .number()
-      .min(1900)
-      .max(new Date().getFullYear(), { message: "Enter a valid year" })
-  ),
+  }, z.string().optional()),
+  entry_year: z.preprocess((value) => {
+    if (value) return Number(value);
+  }, z.number().min(1900).max(new Date().getFullYear(), { message: "Enter a valid year" })),
 });
 
 function Create() {
@@ -63,12 +61,13 @@ function Create() {
         },
         body: JSON.stringify(data),
       });
-      toast({
-        title: "You submitted the following student:",
-        description: (
-          <p className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">Studo</p>
-        ),
-      });
+      console.log("done");
+      // toast({
+      //   title: "You submitted the following student:",
+      //   description: (
+      //     <p className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">Studo</p>
+      //   ),
+      // });
     } catch (error) {
       console.log(error);
     }
@@ -86,7 +85,11 @@ function Create() {
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="John Doe" {...field} />
+                    <Input
+                      placeholder="John Doe"
+                      {...field}
+                      value={field.value ?? ""}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
