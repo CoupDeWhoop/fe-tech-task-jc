@@ -37,7 +37,7 @@ import {
 
 import { Student } from "@/app/columns";
 
-import { Pencil, Trash } from "lucide-react";
+import { Pencil } from "lucide-react";
 import { Calendar as CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -75,12 +75,6 @@ export function EditStudent({ student }: Props) {
       console.log("updated");
       router.refresh();
       setOpen(false);
-      // toast({
-      //   title: "You submitted the following student:",
-      //   description: (
-      //     <p className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">Studo</p>
-      //   ),
-      // });
     } catch (error) {
       console.log(error);
     }

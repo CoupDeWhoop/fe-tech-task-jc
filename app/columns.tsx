@@ -3,6 +3,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 
 import { EditStudent } from "@/components/EditStudent";
+import { DeleteStudent } from "@/components/DeleteStudent";
 
 export type Student = {
   id: Number;
@@ -47,6 +48,11 @@ export const columns: ColumnDef<Student>[] = [
   },
   {
     id: "edit",
-    cell: ({ row }) => <EditStudent student={row.original} />,
+    cell: ({ row }) => (
+      <div className="flex justify-end gap-1 ">
+        <EditStudent student={row.original} />
+        <DeleteStudent student={row.original} />
+      </div>
+    ),
   },
 ];

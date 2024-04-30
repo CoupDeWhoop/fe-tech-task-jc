@@ -68,7 +68,9 @@ function Create() {
       // toast({
       //   title: "You submitted the following student:",
       //   description: (
-      //     <p className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">Studo</p>
+      //     <p className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+      //       {JSON.stringify(data)}
+      //     </p>
       //   ),
       // });
     } catch (error) {
