@@ -1,5 +1,6 @@
 "use client";
 import * as React from "react";
+import { useRouter } from "next/navigation";
 import { format } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
 
@@ -30,24 +31,25 @@ import { Input } from "@/components/ui/input";
 export const formSchema = z.object({
   name: z
     .string()
-    .max(50, "Required")
+    .max(50)
     .regex(/\w{2,} \w{2,}/, { message: "Please enter your full name." }),
   email: z.string().email(),
-  date_of_birth: z.preprocess((dateObj) => {
-    if (dateObj) {
-      if (dateObj instanceof Date) {
-        return dateObj.toISOString();
-      } else {
-        throw new Error("Error picking date");
+  date_of_birth: z.preprocess((date) => {
+    console.log(typeof date);
+    if (date) {
+      if (date instanceof Date) {
+        return date.toISOString();
       }
+      return date;
     }
-  }, z.string().optional()),
+  }, z.string()),
   entry_year: z.preprocess((value) => {
     if (value) return Number(value);
   }, z.number().min(1900).max(new Date().getFullYear(), { message: "Enter a valid year" })),
 });
 
 function Create() {
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
@@ -62,6 +64,7 @@ function Create() {
         body: JSON.stringify(data),
       });
       console.log("done");
+      router.push("/");
       // toast({
       //   title: "You submitted the following student:",
       //   description: (
@@ -170,7 +173,7 @@ function Create() {
                 <FormItem>
                   <FormLabel>Entry year</FormLabel>
                   <FormControl>
-                    <Input type="number" {...field} />
+                    <Input type="number" {...field} value={field.value ?? ""} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

@@ -1,4 +1,6 @@
 import * as React from "react";
+import { useRouter } from "next/navigation";
+
 import { format } from "date-fns";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -35,7 +37,7 @@ import {
 
 import { Student } from "@/app/columns";
 
-import { Pencil } from "lucide-react";
+import { Pencil, Trash } from "lucide-react";
 import { Calendar as CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -46,21 +48,46 @@ interface Props {
 }
 
 export function EditStudent({ student }: Props) {
+  const [open, setOpen] = React.useState(false);
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: String(student.name),
+      email: String(student.email),
+      date_of_birth: String(student.date_of_birth),
+      entry_year: Number(student.entry_year),
+    },
   });
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
-    console.log("Form submitted with data:", data);
+    const { id } = student;
+    try {
+      const response = await fetch(`http://localhost:9090/api/students/${id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+
+        body: JSON.stringify(data),
+      });
+      console.log("updated");
+      router.refresh();
+      setOpen(false);
+      // toast({
+      //   title: "You submitted the following student:",
+      //   description: (
+      //     <p className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">Studo</p>
+      //   ),
+      // });
+    } catch (error) {
+      console.log(error);
+    }
   }
 
-  const [name, setName] = React.useState(student.name);
-  const [entryYear, setEntryYear] = React.useState(
-    student.entry_year.toString()
-  );
-
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant={"ghost"} size={"sm"} className="text-gray-400">
           <Pencil />
@@ -87,7 +114,11 @@ export function EditStudent({ student }: Props) {
                   render={({ field }) => (
                     <FormItem className="col-span-3">
                       <FormControl>
-                        <Input id="name" {...field} value={field.value} />
+                        <Input
+                          id="name"
+                          {...field}
+                          // value={field.value ?? student.name}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -104,7 +135,11 @@ export function EditStudent({ student }: Props) {
                   render={({ field }) => (
                     <FormItem className="col-span-3">
                       <FormControl>
-                        <Input id="email" {...field} value={field.value} />
+                        <Input
+                          id="email"
+                          {...field}
+                          // value={field.value ?? student.email}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -112,7 +147,7 @@ export function EditStudent({ student }: Props) {
                 />
               </div>
 
-              {/* <div className="grid grid-cols-4 items-center gap-4">
+              <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="date_of_birth" className="text-right">
                   Date of Birth
                 </Label>
@@ -131,9 +166,11 @@ export function EditStudent({ student }: Props) {
                                 !field.value && "text-muted-foreground"
                               )}
                             >
-                              {field.value
-                                ? format(field.value, "PPP")
-                                : format(student.date_of_birth, "PPP")}
+                              {field.value ? (
+                                format(field.value, "PPP")
+                              ) : (
+                                <span>Pick a date</span>
+                              )}
                               <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                             </Button>
                           </FormControl>
@@ -144,7 +181,7 @@ export function EditStudent({ student }: Props) {
                             selected={
                               typeof field.value === "string"
                                 ? new Date(field.value)
-                                : field.value
+                                : field.value ?? new Date()
                             }
                             onSelect={field.onChange}
                             disabled={(date) =>
@@ -159,7 +196,7 @@ export function EditStudent({ student }: Props) {
                     </FormItem>
                   )}
                 />
-              </div> */}
+              </div>
               <FormDescription className="grid grid-cols-4 gap-4 text-center">
                 <div className="row-span-2 content-center text-right">
                   <strong>
@@ -188,7 +225,11 @@ export function EditStudent({ student }: Props) {
                           id="entry_year"
                           {...field}
                           type="number"
-                          value={field.value}
+                          // value={
+                          //   field.value
+                          //     ? Number(field.value)
+                          //     : String(student.entry_year)
+                          // }
                         />
                       </FormControl>
                       <FormMessage />
