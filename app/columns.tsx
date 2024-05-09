@@ -4,14 +4,7 @@ import { ColumnDef } from "@tanstack/react-table";
 
 import { EditStudent } from "@/components/EditStudent";
 import { DeleteStudent } from "@/components/DeleteStudent";
-
-export type Student = {
-  id: Number;
-  name: String;
-  email: String;
-  date_of_birth: Date;
-  entry_year: Number;
-};
+import type { Student } from "@/types/Student";
 
 export const columns: ColumnDef<Student>[] = [
   {

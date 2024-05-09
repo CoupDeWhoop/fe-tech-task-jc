@@ -1,5 +1,6 @@
 import DataTable from "@/components/student-data-table";
-import { Student, columns } from "./columns";
+import { columns } from "./columns";
+import { Student } from "@/types/Student";
 
 async function getStudents(): Promise<Student[]> {
   const res = await fetch("http://localhost:9090/api/students", {
@@ -8,6 +9,7 @@ async function getStudents(): Promise<Student[]> {
     },
   });
   const { students } = await res.json();
+
   return students;
 }
 
@@ -15,6 +17,7 @@ export default async function Home() {
   const data = await getStudents();
   return (
     <main>
+      <h1>Hello</h1>
       <DataTable columns={columns} data={data} />
     </main>
   );
