@@ -35,7 +35,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-import { Student } from "@/app/columns";
+import { Student } from "@/types/Student";
 
 import { Pencil } from "lucide-react";
 import { Calendar as CalendarIcon } from "lucide-react";

@@ -4,11 +4,10 @@ import Navbar from "@/components/Navbar";
 
 describe("Home", () => {
   it("should render the ", async () => {
-    render(<Navbar />);
+    render(<Navbar />); // ARRANGE
 
-    const heading = screen.getByRole("heading", { level: 1 });
+    const heading = screen.getByRole("heading", { level: 1 }); // ACT
 
-    // Assert that the fetched data is rendered
-    expect(heading).toBeInTheDocument();
+    expect(heading).toBeInTheDocument(); // ASSERT
   });
 });

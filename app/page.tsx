@@ -1,4 +1,4 @@
-import DataTable from "@/components/student-data-table";
+import DataTable from "@/components/StudentDataTable/StudentDataTable";
 import { columns } from "./columns";
 import { Student } from "@/types/Student";
 

@@ -31,6 +31,8 @@ export default function DataTable<TData, TValue>({
     getCoreRowModel: getCoreRowModel(),
   });
 
+  if (data.length === 0) return <h2>No data available</h2>;
+
   return (
     <div className="rounded-md border">
       <Table>
