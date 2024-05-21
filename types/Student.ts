@@ -1,7 +1,7 @@
 export type Student = {
-  id: Number;
-  name: String;
-  email: String;
-  date_of_birth: Date | String;
-  entry_year: Number;
+  id: number;
+  name: string;
+  email: string;
+  date_of_birth: Date | string;
+  entry_year: number;
 };

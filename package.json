@@ -47,6 +47,7 @@
     "jest-environment-jsdom": "^29.7.0",
     "msw": "^2.3.0",
     "next-router-mock": "^0.9.13",
+    "nock": "^13.5.4",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
     "ts-jest": "^29.1.2",
