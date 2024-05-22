@@ -15,6 +15,7 @@ async function getStudents(): Promise<Student[]> {
 
 export default async function Home() {
   const data = await getStudents();
+  console.log("students", data);
   return (
     <main>
       <h1>Hello</h1>
