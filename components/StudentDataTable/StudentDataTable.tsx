@@ -31,6 +31,7 @@ export default function DataTable<TData, TValue>({
     getCoreRowModel: getCoreRowModel(),
   });
 
+  console.log(data);
   if (data.length === 0) return <h2>No data available</h2>;
 
   return (
