@@ -83,7 +83,12 @@ export function EditStudent({ student }: Props) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant={"ghost"} size={"sm"} className="text-gray-400">
+        <Button
+          variant={"ghost"}
+          size={"sm"}
+          data-testid={`edit-button-${student.id}`}
+          className="text-gray-400"
+        >
           <Pencil />
         </Button>
       </DialogTrigger>
@@ -155,6 +160,7 @@ export function EditStudent({ student }: Props) {
                           <FormControl>
                             <Button
                               variant={"outline"}
+                              id="date_of_birth"
                               className={cn(
                                 "w-[240px] pl-3 text-left font-normal",
                                 !field.value && "text-muted-foreground"

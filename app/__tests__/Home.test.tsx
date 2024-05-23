@@ -1,5 +1,5 @@
 import "@testing-library/jest-dom";
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor, fireEvent } from "@testing-library/react";
 import Home from "../page";
 import { server } from "../../mocks/server";
 import { http, HttpResponse } from "msw";
@@ -21,6 +21,26 @@ describe("Home", () => {
     expect(header1).toBeVisible();
     expect(header2).toBeVisible();
     expect(header3).toBeVisible();
+  });
+
+  it("should display edit student modal", async () => {
+    render(await Home());
+
+    // used data-testid attribute
+    const editButton = screen.getByTestId(`edit-button-1`); // Replace `1` with the actual student ID you're testing
+    fireEvent.click(editButton);
+
+    await waitFor(() => {
+      expect(screen.getByRole("dialog")).toBeVisible();
+    });
+
+    const dialogTitle = screen.getByText(/edit student/i);
+    expect(dialogTitle).toBeVisible();
+
+    expect(screen.getByLabelText(/name/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/date of birth/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/entry year/i)).toBeInTheDocument();
   });
 
   it("should display the correct message when data empty", async () => {
