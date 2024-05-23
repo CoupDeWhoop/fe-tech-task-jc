@@ -46,12 +46,9 @@ describe("Home", () => {
   it("should display the correct message when data empty", async () => {
     server.use(
       http.get("http://localhost:9090/api/students", () => {
-        return HttpResponse.json(
-          {
-            students: [],
-          },
-          { status: 200 }
-        );
+        return HttpResponse.json({
+          students: [],
+        });
       })
     );
 
